@@ -225,7 +225,7 @@ namespace DogGo.Repositories
             }
         }
 
-        public void DeleteOwner(int ownerId)
+        public void DeleteOwner(int Id)
         {
             using (SqlConnection conn = Connection)
             {
@@ -237,7 +237,7 @@ namespace DogGo.Repositories
                             DELETE FROM Owner
                             WHERE Id = @id";
 
-                    cmd.Parameters.AddWithValue("@id", ownerId);
+                    cmd.Parameters.AddWithValue("@id", Id);
 
                     cmd.ExecuteNonQuery();
                 }

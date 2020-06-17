@@ -22,7 +22,7 @@ namespace DogGo.Controllers
             _dogRepo = new DogRepository(config);
         }
 
-        // GET: OwnersController
+        // GET: Owners
         public ActionResult Index()
         {
             List<Owner> owners = _ownerRepo.GetAllOwners();
@@ -30,7 +30,7 @@ namespace DogGo.Controllers
             return View(owners);
         }
 
-        // GET: OwnersController/Details/5
+        // GET: Owners/Details/5
         public ActionResult Details(int id)
         {
             Owner owner = _ownerRepo.GetOwnerById(id);
@@ -44,13 +44,13 @@ namespace DogGo.Controllers
             return View(owner);
         }
 
-        // GET: OwnersController/Create
+        // GET: Owners/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: OwnersController/Create
+        // POST: Owners/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Owner owner)
@@ -67,7 +67,7 @@ namespace DogGo.Controllers
             }
         }
 
-        // GET: OwnersController/Edit/5
+        // GET: Owners/Edit/5
         public ActionResult Edit(int id)
         {
             Owner owner = _ownerRepo.GetOwnerById(id);
@@ -80,7 +80,7 @@ namespace DogGo.Controllers
             return View(owner);
         }
 
-        // POST: OwnersController/Edit/5
+        // POST: Owners/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Owner owner)
@@ -97,7 +97,7 @@ namespace DogGo.Controllers
             }
         }
 
-        // GET: OwnersController/Delete/5
+        // GET: Owners/Delete/5
         public ActionResult Delete(int id)
         {
             Owner owner = _ownerRepo.GetOwnerById(id);
@@ -105,7 +105,7 @@ namespace DogGo.Controllers
             return View(owner);
         }
 
-        // POST: OwnersController/Delete/5
+        // POST: Owners/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Owner owner)
