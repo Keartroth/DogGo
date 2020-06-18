@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DogGo.Models;
+using DogGo.Models.ViewModels;
 using DogGo.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,17 @@ namespace DogGo.Controllers
     public class WalkersController : Controller
     {
         private readonly WalkerRepository _walkerRepo;
+        private readonly OwnerRepository _ownerRepo;
+        private readonly DogRepository _dogRepo;
+        private readonly WalkRepository _walkRepo;
 
         // The constructor accepts an IConfiguration object as a parameter. This class comes from the ASP.NET framework and is useful for retrieving things out of the appsettings.json file like connection strings.
         public WalkersController(IConfiguration config)
         {
             _walkerRepo = new WalkerRepository(config);
+            _ownerRepo = new OwnerRepository(config);
+            _dogRepo = new DogRepository(config);
+            _walkRepo = new WalkRepository(config);
         }
 
         // GET: WalkersController
@@ -31,14 +38,25 @@ namespace DogGo.Controllers
         // GET: WalkersController/Details/5
         public ActionResult Details(int id)
         {
-            Walker walker = _walkerRepo.GetWalkerById(id);
+            WalkerViewModel vm = new WalkerViewModel();
 
-            if (walker == null)
+            vm.Walker = _walkerRepo.GetWalkerById(id);
+
+            if (vm.Walker == null)
             {
                 return NotFound();
             }
 
-            return View(walker);
+            vm.Walks = _walkRepo.GetAllWalkersWalks(vm.Walker.Id);
+
+            foreach(Walk walk in vm.Walks)
+            {
+                walk.Dog.Owner = _ownerRepo.GetOwnerById(walk.Dog.OwnerId);
+            }
+
+            vm.TotalWalkTime = vm.Walks.Sum(item => item.Duration);
+
+            return View(vm);
         }
 
         // GET: WalkersController/Create
