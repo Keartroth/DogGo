@@ -127,15 +127,16 @@ namespace DogGo.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT 
-                              Id, 
-                              [Name], 
-                              OwnerId, 
-                              Breed,
-                              Notes,
-                              ImageUrl
-                         FROM Dog
-                        WHERE OwnerId = @id
-                    ";
+                              d.Id, 
+                              d.[Name], 
+                              d.OwnerId, 
+                              d.Breed,
+                              d.Notes,
+                              d.ImageUrl,
+                              o.Name AS ownerName
+                         FROM Dog d
+                        JOIN Owner o ON o.Id = d.OwnerId
+                        WHERE OwnerId = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
 
@@ -152,7 +153,11 @@ namespace DogGo.Repositories
                             OwnerId = reader.GetInt32(reader.GetOrdinal("OwnerId")),
                             Breed = reader.GetString(reader.GetOrdinal("Breed")),
                             Notes = ReaderHelpers.GetNullableString(reader, "Notes"),
-                            ImageUrl = ReaderHelpers.GetNullableString(reader, "ImageUrl")
+                            ImageUrl = ReaderHelpers.GetNullableString(reader, "ImageUrl"),
+                            Owner = new Owner
+                            {
+                                Name = reader.GetString(reader.GetOrdinal("ownerName"))
+                            }
                         };
 
                         dogs.Add(dog);
